@@ -53,6 +53,19 @@ Route::prefix("manage-customers")
         Route::post("/clients", [ConClientController::class, "store"])->name(
             "clients.store"
         );
+        Route::patch("/clients/{id}", [
+            ConClientController::class,
+            "update",
+        ])->name("clients.update");
+        Route::delete("/clients/{id}", [
+            ConClientController::class,
+            "destroy",
+        ])->name("clients.destroy");
+        Route::delete("/clients", [
+            ConClientController::class,
+            "destroyMultiple",
+        ])->name("clients.multiple.destroy");
+
 
         Route::get("/phones", [ConClientController::class, "index"])->name(
             "phones"
