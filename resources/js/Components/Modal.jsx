@@ -9,15 +9,12 @@ export default function Modal({
     onClose = () => {},
 }) {
     const modalRef = useRef(null);
+    const initialFocusRef = useRef(null);
 
     const close = () => {
         if (closeable) {
             onClose();
         }
-    };
-
-    const onOpen = () => {
-        modalRef.current.focus();
     };
 
     const maxWidthClass = {
@@ -35,8 +32,7 @@ export default function Modal({
                 id="modal"
                 className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center justify-center sm:w-auto z-50 transform transition-all"
                 onClose={close}
-                onOpen={onOpen}
-                initialFocus={modalRef}
+                initialFocus={initialFocusRef}
             >
                 <Transition.Child
                     as={Fragment}
@@ -63,6 +59,12 @@ export default function Modal({
                         ref={modalRef}
                         className={`mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all w-10/12 sm:w-11/12 sm:mx-auto ${maxWidthClass}`}
                     >
+                        {/* Elemento oculto para evitar el enfoque inicial */}
+                        <div
+                            ref={initialFocusRef}
+                            tabIndex={-1}
+                            className="absolute top-0 left-0 w-0 h-0 overflow-hidden"
+                        />
                         {children}
                     </Dialog.Panel>
                 </Transition.Child>

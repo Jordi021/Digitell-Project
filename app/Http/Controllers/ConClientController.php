@@ -18,23 +18,23 @@ class ConClientController extends Controller {
 
     public function store(ClientRequest $clientRequest) {
         ConClient::create($clientRequest->validated());
-        return to_route("clients");
+        return to_route("clients.index");
     }
 
     public function update(ClientRequest $clientRequest, $id) {
         $client = ConClient::findOrFail($id);
         $client->update($clientRequest->validated());
-        return to_route("clients");
+        return to_route("clients.index");
     }
 
     public function destroy($id) {
         ConClient::find($id)->delete();
-        return to_route("clients");
+        return to_route("clients.indexs");
     }
 
     public function destroyMultiple(Request $request) {
         $ids = $request->input("ids");
         ConClient::whereIn("client_id", $ids)->delete();
-        return to_route("clients");
+        return to_route("clients.index");
     }
 }

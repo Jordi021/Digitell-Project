@@ -15,8 +15,6 @@ import TableCustom from "@/Components/TableCustom";
 import CardsCustom from "@/Components/CardCustom";
 
 const Client = ({ auth, Addresses, Clients }) => {
-    console.log(Clients);
-    console.log(Addresses);
     const {
         data,
         setData,
