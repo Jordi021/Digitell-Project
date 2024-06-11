@@ -29,7 +29,7 @@ class ConClientController extends Controller {
 
     public function destroy($id) {
         ConClient::find($id)->delete();
-        return to_route("clients.indexs");
+        return to_route("clients.index");
     }
 
     public function destroyMultiple(Request $request) {

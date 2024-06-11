@@ -37,4 +37,8 @@ class ConClient extends Model {
     public function address() {
         return $this->belongsTo(ConAddress::class, "address_id", "address_id");
     }
+
+    public function phones() {
+        return $this->hasMany(ConPhone::class, "client_id", "client_id");
+    }
 }

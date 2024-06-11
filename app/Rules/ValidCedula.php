@@ -9,7 +9,7 @@ class ValidCedula implements ValidationRule {
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  \Closure(string, string, \Illuminate\Translation\PotentiallyTranslatedString): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
     public function validate(
         string $attribute,
@@ -17,7 +17,7 @@ class ValidCedula implements ValidationRule {
         Closure $fail
     ): void {
         if (!$this->isValidCedula($value)) {
-            $fail("El :attribute no es una cédula válida.");
+            $fail($attribute, "El :attribute no es una cédula válida.");
         }
     }
 
@@ -27,12 +27,8 @@ class ValidCedula implements ValidationRule {
      * @param  string  $cedula
      * @return bool
      */
-    protected function isValidCedula($cedula): bool {
-        if (
-            is_string($cedula) &&
-            strlen($cedula) == 10 &&
-            ctype_digit($cedula)
-        ) {
+    protected function isValidCedula(string $cedula): bool {
+        if (strlen($cedula) == 10 && ctype_digit($cedula)) {
             $digits = array_map("intval", str_split($cedula));
             $codigoProvincia = $digits[0] * 10 + $digits[1];
 
