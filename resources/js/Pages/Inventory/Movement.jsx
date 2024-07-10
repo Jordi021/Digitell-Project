@@ -13,6 +13,7 @@ import tabs from "./tabs";
 import DeleteModal from "@/Components/DeleteModal";
 import TableCustom from "@/Components/TableCustom";
 import CardsCustom from "@/Components/CardCustom";
+import { useNotify } from "@/Components/Toast";
 
 const Movement = ({ auth, Products, Movements }) => {
     const {
@@ -42,7 +43,7 @@ const Movement = ({ auth, Products, Movements }) => {
     const [productQuantity, setProductQuantity] = useState(0);
     const [showQuantityError, setShowQuantityError] = useState(false);
     const [selectedOption, setSelectedOption] = useState("");
-
+    const notify = useNotify();
     useEffect(() => {
         // Reset product quantity and error state whenever product changes
         setProductQuantity(0);
@@ -120,9 +121,11 @@ const Movement = ({ auth, Products, Movements }) => {
 
         post(route("movements.store"), {
             preserveScroll: true,
-            onSuccess: () => closeModalCreate(),
-            onError: (error) => console.log(error),
-            onFinish: () => reset(),
+            onSuccess: () => {
+                closeModalCreate();
+                notify("success", "Cantón agregado.");
+            },
+            onError: (error) => console.error(Object.values(error).join(", ")),
         });
     };
 
@@ -131,9 +134,11 @@ const Movement = ({ auth, Products, Movements }) => {
 
         patch(route("movements.update", { id: editData.movement_id }), {
             preserveScroll: true,
-            onSuccess: () => closeEditModal(),
-            onError: (error) => console.log(error),
-            onFinish: () => reset(),
+            onSuccess: () => {
+                closeEditModal();
+                notify("success", "Movimiento actualizado.");
+            },
+            onError: (error) => console.error(Object.values(error).join(", ")),
         });
     };
 
@@ -145,6 +150,7 @@ const Movement = ({ auth, Products, Movements }) => {
                 onSuccess: () => {
                     setSelectedMovements([]);
                     closeDeleteModal();
+                    notify("success", "Movimientos eliminados.");
                 },
                 onError: (error) => console.error(error),
                 onFinish: () => reset(),
@@ -152,9 +158,12 @@ const Movement = ({ auth, Products, Movements }) => {
         } else {
             destroy(route("movements.destroy", { id }), {
                 preserveScroll: true,
-                onSuccess: () => closeDeleteModal(),
-                onError: (error) => console.error(error),
-                onFinish: () => reset(),
+                onSuccess: () => {
+                    closeDeleteModal();
+                    notify("success", "Movimiento eliminado.");
+                },
+                onError: (error) =>
+                    console.error(Object.values(error).join(", ")),
             });
         }
     };
@@ -287,7 +296,8 @@ const Movement = ({ auth, Products, Movements }) => {
     return (
         <Authenticated
             user={auth.user}
-            header={<Header subtitle="Manage Movements" />}
+            header={<Header subtitle="Administrar movimientos" />}
+            roles={auth.user.roles.map((role) => role.name)}
         >
             <Head title="Movimientos de Inventario" />
             <Tab tabs={tabs}>
@@ -304,13 +314,14 @@ const Movement = ({ auth, Products, Movements }) => {
                             data={Movements}
                             searchColumns={searchColumns}
                             headers={theaders}
+                            fileName="Movimientos"
                         />
                     </div>
                 </Box>
                 <ModalCreate
                     showCreate={showCreate}
                     closeModalCreate={closeModalCreate}
-                    title={"Add Movement"}
+                    title={"Añadir Movimientos"}
                     inputs={inputs}
                     processing={processing}
                     handleSubmitAdd={handleSubmitAdd}

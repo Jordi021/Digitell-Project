@@ -15,7 +15,16 @@ import TableCustom from "@/Components/TableCustom";
 import CardsCustom from "@/Components/CardCustom";
 
 const Plan = ({ auth, Plans }) => {
-    const { data, setData, post, patch, delete: destroy, processing, errors, reset } = useForm({
+    const {
+        data,
+        setData,
+        post,
+        patch,
+        delete: destroy,
+        processing,
+        errors,
+        reset,
+    } = useForm({
         plan_id: "",
         plan_name: "",
         plan_value: "",
@@ -119,7 +128,9 @@ const Plan = ({ auth, Plans }) => {
             name: "plan_name",
             value: data.plan_name,
             onChange: (e) => setData("plan_name", e.target.value),
-            inputError: <InputError message={errors.plan_name} className="mt-2" />,
+            inputError: (
+                <InputError message={errors.plan_name} className="mt-2" />
+            ),
             defaultValue: data.plan_name,
         },
         {
@@ -129,7 +140,9 @@ const Plan = ({ auth, Plans }) => {
             name: "plan_value",
             value: data.plan_value,
             onChange: (e) => setData("plan_value", e.target.value),
-            inputError: <InputError message={errors.plan_value} className="mt-2" />,
+            inputError: (
+                <InputError message={errors.plan_value} className="mt-2" />
+            ),
             defaultValue: data.plan_value,
         },
         {
@@ -139,9 +152,11 @@ const Plan = ({ auth, Plans }) => {
             name: "plan_megas",
             value: data.plan_megas,
             onChange: (e) => setData("plan_megas", e.target.value),
-            inputError: <InputError message={errors.plan_megas} className="mt-2" />,
+            inputError: (
+                <InputError message={errors.plan_megas} className="mt-2" />
+            ),
             defaultValue: data.plan_megas,
-            min: "0", 
+            min: "0",
         },
         {
             label: "Descripción",
@@ -150,18 +165,17 @@ const Plan = ({ auth, Plans }) => {
             name: "plan_description",
             value: data.plan_description,
             onChange: (e) => setData("plan_description", e.target.value),
-            inputError: <InputError message={errors.plan_description} className="mt-2" />,
+            inputError: (
+                <InputError
+                    message={errors.plan_description}
+                    className="mt-2"
+                />
+            ),
             defaultValue: data.plan_description,
         },
     ];
 
-    const theaders = [
-        "Plan ID",
-        " Nombre",
-        " Valor",
-        " Megas",
-        "Descripción",
-    ];
+    const theaders = ["Plan ID", " Nombre", " Valor", " Megas", "Descripción"];
 
     const searchColumns = [
         "plan_id",
@@ -198,6 +212,7 @@ const Plan = ({ auth, Plans }) => {
         <Authenticated
             user={auth.user}
             header={<Header subtitle="Administrar Planes" />}
+            roles={auth.user.roles.map((role) => role.name)}
         >
             <Head title="Planes" />
             <Tab tabs={tabs}>

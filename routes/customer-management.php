@@ -68,17 +68,20 @@ Route::prefix("manage-customers")
             ->middleware("permission:manage cantons");
     });
 
-Route::prefix("manage-contracts")->group(function () {
-    Route::resource("contracts", ConContractController::class)->except([
-        "create",
-        "show",
-        "edit",
-    ]);
-    Route::delete("/contracts", [
-        ConContractController::class,
-        "destroyMultiple",
-    ])->name("contracts.multiple.destroy");
-});
+Route::prefix("manage-contracts")
+    ->middleware(["auth", "verified", "role:vendedor|admin"])
+    ->group(function () {
+        Route::resource("contracts", ConContractController::class)->except([
+            "create",
+            "show",
+            "edit",
+        ]);
+
+        Route::delete("/contracts", [
+            ConContractController::class,
+            "destroyMultiple",
+        ])->name("contracts.multiple.destroy");
+    });
 
 Route::get("orden-trabajo", function () {
     return Inertia::render("OrdenTrabajo");

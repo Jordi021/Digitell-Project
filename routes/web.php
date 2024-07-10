@@ -59,6 +59,7 @@ Route::prefix("manage-orders")
     ->middleware(["auth", "verified"]);
 
 Route::prefix("manage-plans")
+    ->middleware(["auth", "verified", "role:admin|vendedor"])
     ->group(function () {
         Route::resource("plans", PlansController::class)->except([
             "create",
@@ -69,13 +70,12 @@ Route::prefix("manage-plans")
             PlansController::class,
             "destroyMultiple",
         ])->name("plans.multiple.destroy");
-    })
-    ->middleware(["auth", "verified"]);
+    });
 
 Route::get("/check-session", function (Request $request) {
     if (Auth::check()) {
         $lastActivity = $request->session()->get("last_activity");
-        $sessionLifetime = config("session.lifetime") * 60; 
+        $sessionLifetime = config("session.lifetime") * 60;
 
         if ($lastActivity && time() - $lastActivity > $sessionLifetime) {
             Auth::logout();

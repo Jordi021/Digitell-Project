@@ -70,7 +70,10 @@ class InvMovementController extends Controller {
 
     public function destroyMultiple(Request $request) {
         $ids = $request->input("ids");
-        InvMovement::whereIn("movement_id", $ids)->delete();
+        $movements = InvMovement::whereIn("movement_id", $ids)->delete();
+        foreach ($movements as $movement) {
+            $movement->delete();
+        }
         return to_route("movements.index");
     }
 }

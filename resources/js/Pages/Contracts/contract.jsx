@@ -271,6 +271,7 @@ const Contract = ({
             preserveScroll: true,
             onSuccess: () => {
                 closeModalCreate();
+                notify("success", "Contrato agregado.");
             },
             onError: (error) => console.error(Object.values(error).join(", ")),
         });
@@ -724,6 +725,7 @@ const Contract = ({
         <Authenticated
             user={auth.user}
             header={<Header subtitle="Administrar Contratos" />}
+            roles={auth.user.roles.map((role) => role.name)}
         >
             <Head title="Contratos" />
             <Tab tabs={tabs}>

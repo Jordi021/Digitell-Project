@@ -83,7 +83,6 @@ class ConContractController extends Controller {
     public function destroy($id) {
         $contract = ConContract::find($id);
 
-        // Cambiar el estado del contrato a inactivo u otro estado deseado
         $contract->status_id = "STS-0002"; // Por ejemplo, cambia "Inactivo" por el estado que necesites
         $contract->save();
 
@@ -92,7 +91,14 @@ class ConContractController extends Controller {
 
     public function destroyMultiple(Request $request) {
         $ids = $request->input("ids");
-        ConContract::whereIn("contract_num", $ids)->delete();
+
+        $contracts = ConContract::whereIn("contract_num", $ids)->get();
+
+        foreach ($contracts as $contract) {
+            $contract->status_id = "STS-0002";
+            $contract->save();
+        }
+
         return to_route("contracts.index");
     }
 }

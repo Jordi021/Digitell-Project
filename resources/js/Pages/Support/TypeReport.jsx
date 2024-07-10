@@ -147,7 +147,10 @@ const TypeReport = ({ auth, Orders, Reports }) => {
             value: data.name_type_report,
             onChange: (e) => setData("name_type_report", e.target.value),
             inputError: (
-                <InputError message={errors.name_type_report} className="mt-2" />
+                <InputError
+                    message={errors.name_type_report}
+                    className="mt-2"
+                />
             ),
             defaultValue: data.name_type_report,
         },
@@ -159,14 +162,22 @@ const TypeReport = ({ auth, Orders, Reports }) => {
             value: data.description_type_report,
             onChange: (e) => setData("description_type_report", e.target.value),
             inputError: (
-                <InputError message={errors.description_type_report} className="mt-2" />
+                <InputError
+                    message={errors.description_type_report}
+                    className="mt-2"
+                />
             ),
             defaultValue: data.description_type_report,
         },
     ];
 
     const theaders = ["ID", "Tipo de Orden", "Reporte", "Descripción"];
-    const searchColumns = ["type_report_id", "name_type_order", "name_type_report", "description_type_report"];
+    const searchColumns = [
+        "type_report_id",
+        "name_type_order",
+        "name_type_report",
+        "description_type_report",
+    ];
 
     const handleCheckboxChange = (id) => {
         setSelectedReports((prevSelected) => {
@@ -195,6 +206,7 @@ const TypeReport = ({ auth, Orders, Reports }) => {
         <Authenticated
             user={auth.user}
             header={<Header subtitle="Tipos de Reportes" />}
+            roles={auth.user.roles.map((role) => role.name)}
         >
             <Head title="Tipos de Reportes" />
             <Tab tabs={tabs}>
